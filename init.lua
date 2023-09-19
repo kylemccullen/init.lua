@@ -2,6 +2,8 @@ require('kmccullen')
 
 vim.g.mapleader = " "
 
+vim.api.nvim_command('filetype plugin on')
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -94,4 +96,6 @@ require('packer').startup(function(use)
 
     use('ryanoasis/vim-devicons')
     use('tiagofumo/vim-nerdtree-syntax-highlight')
+
+    use('wsdjeg/vim-fetch')
 end)
