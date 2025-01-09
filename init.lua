@@ -1,4 +1,7 @@
-require('kmccullen')
+require('kmccullen.functions')
+
+local vim = vim
+local Plug = vim.fn['plug#']
 
 vim.g.mapleader = " "
 
@@ -41,61 +44,24 @@ vim.keymap.set('v', '<A-k>', ':m \'<-2<CR>gv=gv')
 
 vim.keymap.set('x', '<leader>p', '"_dP')
 
-require('packer').startup(function(use)
-    use 'wbthomason/packer.nvim'
+vim.call('plug#begin')
 
-    use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.1',
-        requires = { {'nvim-lua/plenary.nvim'} }
-    }
+Plug('ellisonleao/gruvbox.nvim')
+Plug('vim-airline/vim-airline')
+Plug('vim-airline/vim-airline-themes')
 
-    use({
-        'ellisonleao/gruvbox.nvim',
-        as = 'gruvbox',
-        config = function()
-            vim.cmd('colorscheme gruvbox')
-        end
-    })
+Plug('tpope/vim-fugitive')
+Plug('mhinz/vim-signify')
 
-    use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
+Plug('preservim/nerdtree')
 
-    use('tpope/vim-fugitive')
-    use('mhinz/vim-signify')
-    use({
-    'kylemccullen/vim-gitstatus',
-    config = function()
-        vim.keymap.set('n', '<leader>gs', vim.cmd.GitStatus)
-    end
-    })
+Plug('nvim-lua/plenary.nvim')
+Plug('nvim-telescope/telescope.nvim')
 
-    use('preservim/nerdtree')
+Plug('nvim-treesitter/nvim-treesitter')
 
-    use('preservim/nerdcommenter')
+Plug('preservim/nerdcommenter')
 
-    use('vim-airline/vim-airline')
-    use('vim-airline/vim-airline-themes')
+vim.call('plug#end')
 
-    use('ThePrimeagen/harpoon')
-
-    use {
-    'windwp/nvim-autopairs',
-    config = function() require('nvim-autopairs').setup {} end
-    }
-
-    use('neovim/nvim-lspconfig')
-
-    use('hrsh7th/nvim-cmp')
-    use('hrsh7th/cmp-buffer')
-    use('hrsh7th/cmp-path')
-    use('saadparwaiz1/cmp_luasnip')
-    use('hrsh7th/cmp-nvim-lsp')
-    use('hrsh7th/cmp-nvim-lua')
-
-    use('jose-elias-alvarez/null-ls.nvim')
-    use('MunifTanjim/prettier.nvim')
-
-    use('ryanoasis/vim-devicons')
-    use('tiagofumo/vim-nerdtree-syntax-highlight')
-
-    use('wsdjeg/vim-fetch')
-end)
+vim.api.nvim_set_keymap('n', '<leader>t', ':lua toggle_terminal()<CR>', { noremap = true, silent = true })
