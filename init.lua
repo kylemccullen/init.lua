@@ -47,21 +47,37 @@ vim.keymap.set('x', '<leader>p', '"_dP')
 vim.call('plug#begin')
 
 Plug('ellisonleao/gruvbox.nvim')
-Plug('vim-airline/vim-airline')
-Plug('vim-airline/vim-airline-themes')
+Plug('Mofiqul/vscode.nvim')
+Plug('nvim-lualine/lualine.nvim')
 
 Plug('tpope/vim-fugitive')
 Plug('mhinz/vim-signify')
 
-Plug('preservim/nerdtree')
+-- Plug('preservim/nerdtree')
+-- Plug('Xuyuanp/nerdtree-git-plugin')
+Plug('nvim-tree/nvim-tree.lua')
 
 Plug('nvim-lua/plenary.nvim')
 Plug('nvim-telescope/telescope.nvim')
 
 Plug('nvim-treesitter/nvim-treesitter')
 
+Plug('stevearc/oil.nvim')
 Plug('preservim/nerdcommenter')
+Plug('windwp/nvim-autopairs')
+
+Plug('neovim/nvim-lspconfig')
+Plug('hrsh7th/cmp-nvim-lsp')
+Plug('hrsh7th/cmp-buffer')
+Plug('hrsh7th/cmp-path')
+Plug('hrsh7th/cmp-cmdline')
+Plug('hrsh7th/nvim-cmp')
+
+Plug('jose-elias-alvarez/null-ls.nvim')
+Plug('MunifTanjim/prettier.nvim')
 
 vim.call('plug#end')
+
+require("nvim-tree").setup()
 
 vim.api.nvim_set_keymap('n', '<leader>t', ':lua toggle_terminal()<CR>', { noremap = true, silent = true })
