@@ -53,8 +53,6 @@ Plug('nvim-lualine/lualine.nvim')
 Plug('tpope/vim-fugitive')
 Plug('mhinz/vim-signify')
 
--- Plug('preservim/nerdtree')
--- Plug('Xuyuanp/nerdtree-git-plugin')
 Plug('nvim-tree/nvim-tree.lua')
 
 Plug('nvim-lua/plenary.nvim')

@@ -66,13 +66,20 @@ cmp.setup.cmdline(':', {
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require'lspconfig'.ts_ls.setup{ capabilities = capabilities }
+require'lspconfig'.angularls.setup{}
+
+-- Angular filetype detection. Can be removed in neovim 0.11.X.
+vim.filetype.add({
+  pattern = {
+    [".*%.component%.html"] = "htmlangular",
+  },
+})
 
 vim.keymap.set('n', '[g', function() vim.diagnostic.goto_prev() end, opts)
 vim.keymap.set('n', ']g', function() vim.diagnostic.goto_next() end, opts)
 vim.keymap.set('n', 'gd', function() vim.lsp.buf.definition() end, opts)
 vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
 vim.keymap.set('n', 'gr', function() vim.lsp.buf.references() end, opts)
-vim.keymap.set('n', 'rn', function() vim.lsp.buf.rename() end, opts)
-vim.keymap.set('n', 'rn', function() vim.lsp.buf.rename() end, opts)
-vim.keymap.set('n', 'ca', function() vim.lsp.buf.code_action() end, opts)
+vim.keymap.set('n', '<leader>rn', function() vim.lsp.buf.rename() end, opts)
+vim.keymap.set('n', '<leader>ca', function() vim.lsp.buf.code_action() end, opts)
 vim.keymap.set('n', 'K', function() vim.lsp.buf.hover() end, opts)
