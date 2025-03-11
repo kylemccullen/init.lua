@@ -70,9 +70,9 @@ require'lspconfig'.angularls.setup{}
 
 -- Angular filetype detection. Can be removed in neovim 0.11.X.
 vim.filetype.add({
-  pattern = {
-    [".*%.component%.html"] = "htmlangular",
-  },
+    pattern = {
+        [".*%.component%.html"] = "htmlangular",
+    },
 })
 
 vim.keymap.set('n', '[g', function() vim.diagnostic.goto_prev() end, opts)

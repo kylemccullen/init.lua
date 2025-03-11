@@ -8,7 +8,7 @@ function toggle_terminal()
         vim.cmd('term')
     else
         local win_id = vim.fn.bufwinid(term_buf)
-        
+
         if win_id ~= -1 then
             vim.api.nvim_win_close(win_id, true)
         else
