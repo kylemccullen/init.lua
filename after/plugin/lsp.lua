@@ -65,14 +65,48 @@ cmp.setup.cmdline(':', {
 })
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-require'lspconfig'.ts_ls.setup{ capabilities = capabilities }
-require'lspconfig'.angularls.setup{}
+
+local function organize_imports()
+    local params = {
+        command = "_typescript.organizeImports",
+        arguments = {vim.api.nvim_buf_get_name(0)},
+        title = ""
+    }
+    vim.lsp.buf.execute_command(params)
+end
+
+require'lspconfig'.ts_ls.setup{
+    capabilities = capabilities,
+    commands = {
+        OrganizeImports = {
+            organize_imports,
+            description = "Organize Imports"
+        }
+    }
+}
+
+local user_profile = os.getenv("USERPROFILE")
+local project_library_path = user_profile .. "\\AppData\\Roaming\\npm"
+local cmd = {"ngserver", "--stdio", "--tsProbeLocations", project_library_path , "--ngProbeLocations", project_library_path}
+
+require'lspconfig'.angularls.setup{
+    capabilities = capabilities,
+    cmd = cmd,
+    on_new_config = function(new_config,new_root_dir)
+        new_config.cmd = cmd
+    end,
+}
 
 -- Angular filetype detection. Can be removed in neovim 0.11.X.
 vim.filetype.add({
     pattern = {
         [".*%.component%.html"] = "htmlangular",
     },
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = "*.ts",
+    callback = organize_imports,
 })
 
 vim.keymap.set('n', '[g', function() vim.diagnostic.goto_prev() end, opts)
