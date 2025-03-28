@@ -54,6 +54,7 @@ Plug('tpope/vim-fugitive')
 Plug('mhinz/vim-signify')
 
 Plug('nvim-tree/nvim-tree.lua')
+Plug('nvim-tree/nvim-web-devicons')
 
 Plug('nvim-lua/plenary.nvim')
 Plug('nvim-telescope/telescope.nvim')
@@ -73,6 +74,8 @@ Plug('hrsh7th/nvim-cmp')
 
 Plug('jose-elias-alvarez/null-ls.nvim')
 Plug('MunifTanjim/prettier.nvim')
+
+Plug('delphinus/vim-firestore')
 
 vim.call('plug#end')
 
