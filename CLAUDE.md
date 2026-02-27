@@ -55,6 +55,30 @@ chmod +x ~/.claude/hooks/tmux-notify.sh
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/tmux-notify.sh stop",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/tmux-notify.sh clear",
+            "async": true
+          }
+        ]
+      }
     ]
   }
 }
