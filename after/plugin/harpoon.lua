@@ -1,19 +1,22 @@
 local harpoon = require("harpoon")
 harpoon:setup()
 
--- Helper function to create or select a terminal
+local terminals = {}
+
 local function toggle_term(term_id)
-    local term_list = harpoon:list("term")
-    local term_item = term_list:get(term_id)
-    
-    if term_item == nil or term_item.value == "" then
-        -- Create a new terminal
+    local bufnr = terminals[term_id]
+
+    if bufnr == nil or not vim.api.nvim_buf_is_valid(bufnr) then
         vim.cmd("terminal")
-        -- Add it to harpoon at the specific position
-        term_list:replace_at(term_id)
+        terminals[term_id] = vim.api.nvim_get_current_buf()
+        vim.cmd("startinsert")
     else
-        -- Select existing terminal
-        term_list:select(term_id)
+        local wins = vim.fn.win_findbuf(bufnr)
+        if #wins > 0 then
+            vim.api.nvim_set_current_win(wins[1])
+        else
+            vim.api.nvim_set_current_buf(bufnr)
+        end
     end
 end
 
