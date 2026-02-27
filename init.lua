@@ -73,5 +73,5 @@ vim.api.nvim_create_user_command('Wt', function(opts)
         return
     end
     -- Source the wt function and call it
-    vim.fn.system('bash -c "source ~/.local/bin/wt.sh && wt ' .. vim.fn.shellescape(branch) .. '"')
+    vim.fn.system('bash -c "source ~/.config/nvim/scripts/wt.sh && wt ' .. vim.fn.shellescape(branch) .. '"')
 end, { nargs = 1 })
