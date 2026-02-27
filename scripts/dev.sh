@@ -44,6 +44,6 @@ dev() {
         fi
         
         # Start tmux session with first letter of folder, window named after branch
-        tmux new-session -s "$session_name" -n "$branch_name" \; send-keys "nvim ." C-m
+        tmux new-session -s "$session_name" -n "$branch_name" \; send-keys "nvim . +OpenClaude" C-m
     fi
 }

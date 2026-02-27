@@ -56,6 +56,6 @@ wt() {
         cd "$worktree_path"
     else
         # Create new tmux window with branch name
-        tmux new-window -n "$1" -c "$worktree_path" \; set-window-option automatic-rename off \; send-keys "nvim ." C-m
+        tmux new-window -n "$1" -c "$worktree_path" \; set-window-option automatic-rename off \; send-keys "nvim . +OpenClaude" C-m
     fi
 }
