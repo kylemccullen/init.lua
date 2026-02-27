@@ -20,6 +20,11 @@ local function toggle_term(term_id)
     end
 end
 
+-- Allow other files to register a buffer into a terminal slot
+_G.register_harpoon_term = function(id, bufnr)
+    terminals[id] = bufnr
+end
+
 -- Setup keymaps
 vim.keymap.set("n", "<leader>th", function() toggle_term(1) end, { desc = "Terminal 1" })
 vim.keymap.set("n", "<leader>tj", function() toggle_term(2) end, { desc = "Terminal 2" })

@@ -1,5 +1,17 @@
 #!/bin/bash
 
+_wt_complete() {
+    local project_name=$(basename "$PWD")
+    local parent_dir=$(dirname "$PWD")
+    local worktrees_dir="$parent_dir/${project_name}-worktrees"
+
+    if [ -d "$worktrees_dir" ]; then
+        local folders=$(ls -1 "$worktrees_dir" 2>/dev/null)
+        COMPREPLY=($(compgen -W "$folders" -- "${COMP_WORDS[COMP_CWORD]}"))
+    fi
+}
+complete -F _wt_complete wt
+
 wt() {
     if [ -z "$1" ]; then
         echo "Usage: wt <branch-name>"

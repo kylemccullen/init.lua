@@ -52,6 +52,7 @@ Plug('nvim-tree/nvim-tree.lua')
 Plug('nvim-tree/nvim-web-devicons')
 
 Plug('tpope/vim-fugitive')
+Plug('mhinz/vim-signify')
 
 Plug('nvim-lua/plenary.nvim')
 Plug('nvim-telescope/telescope.nvim')
