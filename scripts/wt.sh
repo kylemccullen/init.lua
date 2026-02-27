@@ -60,6 +60,25 @@ wt() {
             echo "Error: Failed to create worktree"
             return 1
         fi
+
+        # Copy temp/gitignored files to the new worktree
+        # Reads file list from .wt-files if present, otherwise uses defaults
+        local copy_files=()
+        if [ -f ".wt-files" ]; then
+            while IFS= read -r line || [ -n "$line" ]; do
+                [[ "$line" =~ ^#.*$ || -z "$line" ]] && continue
+                copy_files+=("$line")
+            done < ".wt-files"
+        else
+            # Default: common env/secret files
+            copy_files=(.env .env.local .env.development .env.development.local .env.test .env.test.local .env.production .env.production.local)
+        fi
+
+        for file in "${copy_files[@]}"; do
+            if [ -e "$file" ]; then
+                cp -r "$file" "$worktree_path/$file" && echo "Copied $file" || echo "Warning: failed to copy $file"
+            fi
+        done
     fi
     
     # Check if we're in a tmux session
