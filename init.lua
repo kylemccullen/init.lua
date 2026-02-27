@@ -1,11 +1,7 @@
-require('kmccullen.functions')
-
 local vim = vim
 local Plug = vim.fn['plug#']
 
 vim.g.mapleader = " "
-
-vim.api.nvim_command('filetype plugin on')
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -46,39 +42,23 @@ vim.keymap.set('x', '<leader>p', '"_dP')
 
 vim.call('plug#begin')
 
-Plug('ellisonleao/gruvbox.nvim')
 Plug('Mofiqul/vscode.nvim')
 Plug('nvim-lualine/lualine.nvim')
 
-Plug('tpope/vim-fugitive')
-Plug('mhinz/vim-signify')
-
 Plug('nvim-tree/nvim-tree.lua')
 Plug('nvim-tree/nvim-web-devicons')
+
+Plug('tpope/vim-fugitive')
 
 Plug('nvim-lua/plenary.nvim')
 Plug('nvim-telescope/telescope.nvim')
 
 Plug('nvim-treesitter/nvim-treesitter')
 
-Plug('stevearc/oil.nvim')
 Plug('preservim/nerdcommenter')
-Plug('windwp/nvim-autopairs')
 
-Plug('neovim/nvim-lspconfig')
-Plug('hrsh7th/cmp-nvim-lsp')
-Plug('hrsh7th/cmp-buffer')
-Plug('hrsh7th/cmp-path')
-Plug('hrsh7th/cmp-cmdline')
-Plug('hrsh7th/nvim-cmp')
+Plug('szw/vim-maximizer')
 
-Plug('jose-elias-alvarez/null-ls.nvim')
-Plug('MunifTanjim/prettier.nvim')
-
-Plug('delphinus/vim-firestore')
+Plug('ThePrimeagen/harpoon', { branch = 'harpoon2' })
 
 vim.call('plug#end')
-
-require("nvim-tree").setup()
-
-vim.api.nvim_set_keymap('n', '<leader>t', ':lua toggle_terminal()<CR>', { noremap = true, silent = true })
