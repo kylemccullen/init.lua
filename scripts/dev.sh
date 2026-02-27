@@ -34,16 +34,15 @@ dev() {
     local session_name="${1:0:1}"
 
     if [ -n "$TMUX" ]; then
-        echo "Already in a tmux session. Opening nvim..."
-        nvim .
+        echo "Already in a tmux session."
     else
         # Check if session already exists and kill it
         if tmux has-session -t "$session_name" 2>/dev/null; then
             echo "Session '$session_name' already exists. Killing old session..."
             tmux kill-session -t "$session_name"
         fi
-        
+
         # Start tmux session with first letter of folder, window named after branch
-        tmux new-session -s "$session_name" -n "$branch_name" \; send-keys "nvim . +OpenClaude" C-m
+        tmux new-session -s "$session_name" -n "$branch_name"
     fi
 }
