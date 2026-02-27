@@ -12,3 +12,33 @@
 export REPOS_ROOT=/your/repos/path
 source ~/.config/nvim/scripts/dev.sh
 ```
+
+6. Include the following in your `~/.claude/settings.json` file
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tmux rename-window \"$(tmux display-message -p '#W' | sed 's/!$//')!\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "tmux rename-window \"$(tmux display-message -p '#W' | sed 's/!$//')\""
+          }
+        ]
+      }
+    ]
+  }
+}
+```
