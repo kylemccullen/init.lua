@@ -12,11 +12,53 @@ This is a Neovim configuration using **vim-plug** as the plugin manager.
 3. Launch nvim and run `:PlugInstall`
 4. Add to `~/.bashrc`:
    ```bash
-   export REPOS_ROOT=/your/repos/path
+   export REPOS_PATH=/your/repos/path
    source ~/.config/nvim/scripts/dev.sh
+   source ~/.config/nvim/scripts/wt.sh
    ```
 
 **Adding/updating plugins:** Edit the `vim.call('plug#begin')` block in `init.lua`, then run `:PlugInstall` or `:PlugUpdate` in nvim.
+
+## Claude Code integration (tmux `[!]` indicator)
+
+When Claude needs input, the tmux window name gets `[!]` appended. Two things to set up:
+
+**1. Install the hook script:**
+```bash
+mkdir -p ~/.claude/hooks
+cp ~/.config/nvim/scripts/tmux-notify.sh ~/.claude/hooks/tmux-notify.sh
+chmod +x ~/.claude/hooks/tmux-notify.sh
+```
+
+**2. Add hooks to `~/.claude/settings.json`** (merge with any existing content):
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/tmux-notify.sh stop",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/tmux-notify.sh clear",
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 
 ## Architecture
 
