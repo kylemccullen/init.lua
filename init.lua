@@ -40,6 +40,9 @@ vim.keymap.set('v', '<A-k>', ':m \'<-2<CR>gv=gv')
 
 vim.keymap.set('x', '<leader>p', '"_dP')
 
+vim.keymap.set("t", "<C-Space>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+vim.keymap.set("t", "<C-\\>", "<Nop>", { desc = "Disabled - use Ctrl+Space" })
+
 vim.call('plug#begin')
 
 Plug('Mofiqul/vscode.nvim')
@@ -62,3 +65,13 @@ Plug('szw/vim-maximizer')
 Plug('ThePrimeagen/harpoon', { branch = 'harpoon2' })
 
 vim.call('plug#end')
+
+vim.api.nvim_create_user_command('Wt', function(opts)
+    local branch = opts.args
+    if branch == '' then
+        print('Usage: :Wt <branch-name>')
+        return
+    end
+    -- Source the wt function and call it
+    vim.fn.system('bash -c "source ~/.local/bin/wt.sh && wt ' .. vim.fn.shellescape(branch) .. '"')
+end, { nargs = 1 })
