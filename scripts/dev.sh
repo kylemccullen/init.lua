@@ -1,9 +1,27 @@
 #!/bin/bash
 
 dev() {
-    if [ -z "$1" ]; then
+    if [ -z "$1" ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
         echo "Usage: dev <project-folder>"
-        return 1
+        echo ""
+        echo "Opens a project in a new tmux session with nvim."
+        echo ""
+        echo "Arguments:"
+        echo "  <project-folder>  Name of a folder to find in REPOS_PATH, or '.' for the current directory"
+        echo ""
+        echo "Options:"
+        echo "  -h, --help        Show this help message"
+        echo ""
+        echo "Environment:"
+        echo "  REPOS_PATH        Colon-separated list of base directories to search for projects"
+        echo "                    Example: /home/user/repos:/home/user/work"
+        echo ""
+        echo "Behavior:"
+        echo "  - Searches REPOS_PATH left-to-right and opens the first matching folder"
+        echo "  - Creates a tmux session named after the first letter of the project folder"
+        echo "  - Names the tmux window after the current git branch"
+        echo "  - If a session with the same name exists, it will be replaced"
+        [ -z "$1" ] && return 1 || return 0
     fi
 
     local project_path=""
