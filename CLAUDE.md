@@ -12,10 +12,11 @@ This is a Neovim configuration using **vim-plug** as the plugin manager.
 3. Launch nvim and run `:PlugInstall`
 4. Add to `~/.bashrc`:
    ```bash
-   export REPOS_PATH=/your/repos/path
+   export REPOS_PATH=/your/repos/path:/your/other/repos/path
    source ~/.config/nvim/scripts/dev.sh
    source ~/.config/nvim/scripts/wt.sh
    ```
+   `REPOS_PATH` is colon-separated. `dev <project>` searches left-to-right and opens the first matching folder.
 
 **Adding/updating plugins:** Edit the `vim.call('plug#begin')` block in `init.lua`, then run `:PlugInstall` or `:PlugUpdate` in nvim.
 

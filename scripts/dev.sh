@@ -11,10 +11,17 @@ dev() {
         return 1
     fi
 
-    local project_path="$REPOS_PATH/$1"
-    
-    if [ ! -d "$project_path" ]; then
-        echo "Error: Project directory '$project_path' does not exist"
+    local project_path=""
+    local IFS=":"
+    for base in $REPOS_PATH; do
+        if [ -d "$base/$1" ]; then
+            project_path="$base/$1"
+            break
+        fi
+    done
+
+    if [ -z "$project_path" ]; then
+        echo "Error: No directory '$1' found in REPOS_PATH"
         return 1
     fi
 

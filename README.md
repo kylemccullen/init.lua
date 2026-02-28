@@ -9,7 +9,7 @@
 5. Add to `~/.bashrc`:
 
 ```bash
-export REPOS_PATH=/your/repos/path
+export REPOS_PATH=/your/repos/path:/your/other/repos/path
 source ~/.config/nvim/scripts/dev.sh
 source ~/.config/nvim/scripts/wt.sh
 ```
