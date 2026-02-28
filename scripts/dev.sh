@@ -6,26 +6,34 @@ dev() {
         return 1
     fi
 
-    if [ -z "$REPOS_PATH" ]; then
-        echo "Error: REPOS_PATH environment variable is not set"
-        return 1
-    fi
-
     local project_path=""
-    local IFS=":"
-    for base in $REPOS_PATH; do
-        if [ -d "$base/$1" ]; then
-            project_path="$base/$1"
-            break
-        fi
-    done
 
-    if [ -z "$project_path" ]; then
-        echo "Error: No directory '$1' found in REPOS_PATH"
-        return 1
+    if [ "$1" = "." ]; then
+        project_path="$(pwd)"
+    else
+        if [ -z "$REPOS_PATH" ]; then
+            echo "Error: REPOS_PATH environment variable is not set"
+            return 1
+        fi
+
+        local IFS=":"
+        for base in $REPOS_PATH; do
+            if [ -d "$base/$1" ]; then
+                project_path="$base/$1"
+                break
+            fi
+        done
+
+        if [ -z "$project_path" ]; then
+            echo "Error: No directory '$1' found in REPOS_PATH"
+            return 1
+        fi
     fi
 
     cd "$project_path" || return 1
+
+    local folder_name
+    folder_name=$(basename "$project_path")
 
     local branch_name
     if git rev-parse --git-dir > /dev/null 2>&1; then
@@ -35,10 +43,10 @@ dev() {
     fi
 
     # Set WSL terminal window title to project folder name
-    echo -ne "\033]0;$1\007"
+    echo -ne "\033]0;$folder_name\007"
 
     # Get first letter of folder name for session
-    local session_name="${1:0:1}"
+    local session_name="${folder_name:0:1}"
 
     if [ -n "$TMUX" ]; then
         echo "Already in a tmux session."
