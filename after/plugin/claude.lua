@@ -8,7 +8,7 @@ vim.api.nvim_create_user_command('OpenClaude', function()
         end
         vim.defer_fn(function()
             local job_id = vim.api.nvim_buf_get_var(term_buf, 'terminal_job_id')
-            vim.fn.chansend(job_id, 'claude\n')
+            vim.fn.chansend(job_id, '[ -f .claude-ticket.md ] && { echo; cat .claude-ticket.md; echo; }; claude\n')
         end, 1000)
     end)
 end, {})

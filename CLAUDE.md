@@ -114,6 +114,10 @@ chmod +x ~/.claude/hooks/tmux-notify.sh
 - `<leader>p` — paste without yanking (visual mode)
 - `<C-Space>` — exit terminal mode
 
+## Worktree ticket context
+
+`wt <branch> -gh` stores the fetched GitHub issue in `.claude-ticket.md` inside the worktree (gitignored automatically). A pointer instruction is prepended to the worktree's `CLAUDE.md` so Claude reads the hidden file on startup and prints it for confirmation. If `-gh` is not passed, any existing `.claude-ticket.md` is deleted to prevent stale context.
+
 ## Treesitter Languages
 
 Pre-configured: `c_sharp`, `json`, `typescript`, `html`, `tsx`, `lua`, `angular`
