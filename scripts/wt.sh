@@ -6,7 +6,9 @@ _wt_complete() {
     local worktrees_dir="$parent_dir/${project_name}-worktrees"
 
     if [ -d "$worktrees_dir" ]; then
-        local folders=$(ls -1 "$worktrees_dir" 2>/dev/null)
+        local folders
+        folders=$(find "$worktrees_dir" -mindepth 1 -maxdepth 2 -type d 2>/dev/null \
+            | sed "s|$worktrees_dir/||")
         COMPREPLY=($(compgen -W "$folders" -- "${COMP_WORDS[COMP_CWORD]}"))
     fi
 }
@@ -136,14 +138,15 @@ wt() {
         echo "Created worktrees directory: $worktrees_dir"
     fi
 
-    # Replace / with - in branch name for folder name
-    local folder_name="${branch_name//\//-}"
-    local worktree_path="$worktrees_dir/$folder_name"
+    local worktree_path="$worktrees_dir/$branch_name"
 
     # Check if worktree already exists
     if [ -d "$worktree_path" ]; then
         echo "Worktree already exists at: $worktree_path"
     else
+        # Ensure parent directories exist (e.g. for feature/123 → feature/)
+        mkdir -p "$(dirname "$worktree_path")"
+
         # Check if branch exists
         if git rev-parse --verify "$branch_name" >/dev/null 2>&1; then
             # Branch exists, checkout existing branch
