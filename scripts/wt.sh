@@ -28,6 +28,7 @@ _wt_get_github_repo() {
 _wt_fetch_gh_context() {
     local repo="$1"
     local issue="$2"
+    local err_file="${3:-/tmp/wt_gh_err}"
 
     if command -v gh &>/dev/null; then
         gh issue view "$issue" --repo "$repo" --json number,title,body,url \
@@ -35,11 +36,11 @@ _wt_fetch_gh_context() {
 
 **URL:** {{.url}}
 
-{{.body}}'
+{{.body}}' 2>"$err_file"
     elif [ -n "$GITHUB_TOKEN" ]; then
         local resp
         resp=$(curl -sf -H "Authorization: token $GITHUB_TOKEN" \
-            "https://api.github.com/repos/$repo/issues/$issue")
+            "https://api.github.com/repos/$repo/issues/$issue" 2>"$err_file")
         if [ -z "$resp" ]; then
             return 1
         fi
@@ -49,6 +50,7 @@ _wt_fetch_gh_context() {
         body=$(echo "$resp"  | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('body',''))" 2>/dev/null)
         printf '## GitHub Issue: %s\n\n**URL:** %s\n\n%s\n' "$title" "$url" "$body"
     else
+        echo "No 'gh' CLI found and \$GITHUB_TOKEN is not set." > "$err_file"
         return 1
     fi
 }
@@ -168,7 +170,7 @@ wt() {
             done < ".wt-files"
         else
             # Default: common env/secret files
-            copy_files=(.env .env.local .env.development .env.development.local .env.test .env.test.local .env.production .env.production.local)
+            copy_files=(.env .env.local .env.development .env.development.local .env.test .env.test.local .env.production .env.production.local Makefile)
         fi
 
         for file in "${copy_files[@]}"; do
@@ -198,7 +200,9 @@ wt() {
             else
                 echo "Fetching GitHub issue #$issue_num from $gh_repo..."
                 local issue_context
-                if issue_context=$(_wt_fetch_gh_context "$gh_repo" "$issue_num"); then
+                local err_tmp="/tmp/wt_gh_err"
+                : > "$err_tmp"
+                if issue_context=$(_wt_fetch_gh_context "$gh_repo" "$issue_num" "$err_tmp"); then
                     echo ""
                     echo "─────────────────────────────────────────"
                     echo "$issue_context"
@@ -208,8 +212,18 @@ wt() {
                     _wt_add_gitignore_entry "$worktree_path"
                     _wt_inject_claude_context "$worktree_path"
                 else
-                    echo "Error: could not fetch issue #$issue_num from $gh_repo"
-                    echo "  Ensure 'gh' is authenticated (gh auth login) or \$GITHUB_TOKEN is set."
+                    local err_detail
+                    err_detail=$(cat "$err_tmp" 2>/dev/null)
+                    local error_content
+                    error_content="$(printf '## GitHub Issue Fetch Failed\n\n**Branch:** %s\n**Issue:** #%s\n**Repo:** %s\n\n**Error:**\n%s\n\nEnsure `gh` is authenticated (`gh auth login`) or $GITHUB_TOKEN is set.' \
+                        "$branch_name" "$issue_num" "$gh_repo" "${err_detail:-No additional error details}")"
+                    printf '%s\n' "$error_content" > "$worktree_path/.claude-ticket.md"
+                    _wt_add_gitignore_entry "$worktree_path"
+                    echo ""
+                    echo "─────────────────────────────────────────"
+                    cat "$worktree_path/.claude-ticket.md"
+                    echo "─────────────────────────────────────────"
+                    echo ""
                 fi
             fi
         fi
