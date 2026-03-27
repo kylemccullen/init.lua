@@ -1,5 +1,4 @@
--- Open terminal 2 and run claude (used by dev/wt scripts on startup)
-vim.api.nvim_create_user_command('OpenClaude', function()
+vim.api.nvim_create_user_command('ClorkOnWorktreeOpen', function()
     vim.schedule(function()
         vim.cmd("terminal")
         local term_buf = vim.api.nvim_get_current_buf()

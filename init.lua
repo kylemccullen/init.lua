@@ -51,6 +51,8 @@ Plug('nvim-lualine/lualine.nvim')
 Plug('nvim-tree/nvim-tree.lua')
 Plug('nvim-tree/nvim-web-devicons')
 
+Plug('windwp/nvim-autopairs')
+
 Plug('tpope/vim-fugitive')
 Plug('mhinz/vim-signify')
 
