@@ -3,9 +3,9 @@ require('nvim-treesitter').setup {
   install_dir = vim.fn.stdpath('data') .. '/site'
 }
 
-require('nvim-treesitter').install { 'javascript', 'typescript', 'tsx', 'c_sharp', 'ruby', 'html', 'css' }
+require('nvim-treesitter').install { 'javascript', 'typescript', 'tsx', 'c_sharp', 'ruby', 'html', 'css', 'razor' }
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'javascript', 'typescript', 'typescriptreact', 'cs', 'ruby', 'html', 'css' },
+  pattern = { 'javascript', 'typescript', 'typescriptreact', 'cs', 'ruby', 'html', 'css', 'razor' },
   callback = function() vim.treesitter.start() end,
 })
